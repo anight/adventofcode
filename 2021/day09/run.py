@@ -17,7 +17,7 @@ field = load_data('input.txt')
 field_padded = np.pad(field, 1, 'constant', constant_values=9)
 
 def rolling_window(a, window):
-	shape = np.array(a.shape, dtype=np.int) - np.array(window.shape, dtype=np.int) + 1
+	shape = np.array(a.shape, dtype=int) - np.array(window.shape, dtype=int) + 1
 	shape = tuple(shape) + window.shape
 	strides = a.strides + a.strides
 	return np.lib.stride_tricks.as_strided(a, shape=shape, strides=strides)

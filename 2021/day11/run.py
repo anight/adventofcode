@@ -15,7 +15,7 @@ import numpy as np
 data = load_data('input.txt')
 
 def rolling_window(a, window):
-	shape = np.array(a.shape, dtype=np.int) - np.array(window.shape, dtype=np.int) + 1
+	shape = np.array(a.shape, dtype=int) - np.array(window.shape, dtype=int) + 1
 	shape = tuple(shape) + window.shape
 	strides = a.strides + a.strides
 	return np.lib.stride_tricks.as_strided(a, shape=shape, strides=strides)

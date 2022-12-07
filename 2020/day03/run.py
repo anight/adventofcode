@@ -10,7 +10,7 @@ def load_data(filename):
 			line = line.strip()
 			line = line.replace('#', '1').replace('.', '0')
 			a.append(list(map(int, line)))
-	return np.array(a, dtype=np.int)
+	return np.array(a, dtype=int)
 
 def num_trees(m, dx, dy):
 	y, x = 0, 0

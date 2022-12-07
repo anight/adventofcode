@@ -34,7 +34,7 @@ class Tile:
 		for line in lines:
 			line = list(map(int, line.replace('#', '1').replace('.', '0')))
 			mat.append(line)
-		return np.array(mat, dtype=np.int)
+		return np.array(mat, dtype=int)
 
 	@staticmethod
 	def all_tile_rotations(m):
@@ -98,8 +98,8 @@ class Puzzle:
 		self.w, self.h = size
 		self.tile_w, self.tile_h = tile_size
 		# hard coded overlap == 1 pixel
-		self.picture = np.zeros( (self.h * (self.tile_h-1) + 1, self.w * (self.tile_w-1) + 1), dtype=np.int )
-		self.mask = np.zeros( self.picture.shape, dtype=np.int )
+		self.picture = np.zeros( (self.h * (self.tile_h-1) + 1, self.w * (self.tile_w-1) + 1), dtype=int )
+		self.mask = np.zeros( self.picture.shape, dtype=int )
 
 	def put(self, coords, t):
 		x, y = coords
