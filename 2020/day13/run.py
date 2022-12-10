@@ -27,13 +27,10 @@ print(best_bus * (best_ts - ts))
 
 # Okay, let's bring in some black magic and prime numbers properties
 
-period = None
+period = 1
 offset = 0
 for i, bus in enumerate(buses):
 	if bus == 'x':
-		continue
-	if period is None:
-		period = bus
 		continue
 	c = 1
 	while (period * c + i + offset) % bus != 0:
