@@ -11,35 +11,35 @@ def load_data(filename):
 # Part One
 
 import numpy as np
-from dijkstra import Graph, dijkstra
+from dijkstra import Graph
 
 a = load_data('input.txt')
-
-h, w = a.shape
 
 def from_0_to_last(a):
 	h, w = a.shape
 
-	def get_neighbours(current):
-		x, y = current % w, current // w
-		if x > 0:
-			yield current-1, a[y,x-1]
-		if x < w-1:
-			yield current+1, a[y,x+1]
-		if y > 0:
-			yield current-w, a[y-1,x]
-		if y < h-1:
-			yield current+w, a[y+1,x]
+	class Walker(Graph):
 
-	g = Graph(w * h, get_neighbours)
+		@staticmethod
+		def neighbours(current):
+			x, y = current
+			if x > 0:
+				yield (x-1, y), a[y,x-1]
+			if x < w-1:
+				yield (x+1, y), a[y,x+1]
+			if y > 0:
+				yield (x, y-1), a[y-1,x]
+			if y < h-1:
+				yield (x, y+1), a[y+1,x]
 
-	D = dijkstra(g, 0)
-
-	return D[w*h-1]
+	D = Walker().dijkstra((0, 0))
+	return D[(w-1, h-1)]
 
 print(from_0_to_last(a))
 
 # Part Two
+
+h, w = a.shape
 
 mw, mh = 5, 5
 

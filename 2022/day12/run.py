@@ -21,28 +21,28 @@ import numpy as np
 
 heightmap, S, E = load_data('input.txt')
 
-from dijkstra import Graph, dijkstra
+from dijkstra import Graph
 
 def from_S_to_E(heightmap, S, E):
 	h, w = heightmap.shape
 
-	def get_neighbours(current):
-		x, y = current % w, current // w
-		height = heightmap[y,x]
-		if x > 0 and heightmap[y,x-1] - height <= 1:
-			yield current-1, 1
-		if x < w-1 and heightmap[y,x+1] - height <= 1:
-			yield current+1, 1
-		if y > 0 and heightmap[y-1,x] - height <= 1:
-			yield current-w, 1
-		if y < h-1 and heightmap[y+1,x] - height <= 1:
-			yield current+w, 1
+	class from_S_to_E(Graph):
 
-	g = Graph(w * h, get_neighbours)
+		@staticmethod
+		def neighbours(current):
+			x, y = current
+			height = heightmap[y,x]
+			if x > 0 and heightmap[y,x-1] - height <= 1:
+				yield (x-1, y), 1
+			if x < w-1 and heightmap[y,x+1] - height <= 1:
+				yield (x+1, y), 1
+			if y > 0 and heightmap[y-1,x] - height <= 1:
+				yield (x, y-1), 1
+			if y < h-1 and heightmap[y+1,x] - height <= 1:
+				yield (x, y+1), 1
 
-	D = dijkstra(g, S[0] + w * S[1])
-
-	return D[E[0] + w * E[1]]
+	D = from_S_to_E().dijkstra(S)
+	return D[E]
 
 print(from_S_to_E(heightmap, S, E))
 
@@ -51,29 +51,30 @@ print(from_S_to_E(heightmap, S, E))
 def from_E_to_a(heightmap, E):
 	h, w = heightmap.shape
 
-	def get_neighbours(current):
-		x, y = current % w, current // w
-		height = heightmap[y,x]
-		if x > 0 and heightmap[y,x-1] - height >= -1:
-			yield current-1, 1
-		if x < w-1 and heightmap[y,x+1] - height >= -1:
-			yield current+1, 1
-		if y > 0 and heightmap[y-1,x] - height >= -1:
-			yield current-w, 1
-		if y < h-1 and heightmap[y+1,x] - height >= -1:
-			yield current+w, 1
+	class from_E_to_a(Graph):
 
-	g = Graph(w * h, get_neighbours)
+		@staticmethod
+		def neighbours(current):
+			x, y = current
+			height = heightmap[y,x]
+			if x > 0 and heightmap[y,x-1] - height >= -1:
+				yield (x-1, y), 1
+			if x < w-1 and heightmap[y,x+1] - height >= -1:
+				yield (x+1, y), 1
+			if y > 0 and heightmap[y-1,x] - height >= -1:
+				yield (x, y-1), 1
+			if y < h-1 and heightmap[y+1,x] - height >= -1:
+				yield (x, y+1), 1
 
-	D = dijkstra(g, E[0] + w * E[1])
+	D = from_E_to_a().dijkstra(E)
 
 	best = None
 	for y in range(h):
 		for x in range(w):
-			if heightmap[y,x] == 0:
-				if best is None or D[best[1] + w * best[0]] > D[x + w * y]:
-					best = (y, x)
+			if heightmap[y,x] == 0 and (x, y) in D:
+				if best is None or D[best] > D[(x, y)]:
+					best = (x, y)
 
-	return D[best[1] + w * best[0]]
+	return D[best]
 
 print(from_E_to_a(heightmap, E))
