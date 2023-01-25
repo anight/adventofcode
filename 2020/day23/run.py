@@ -98,11 +98,11 @@ print(cups.ordered_from_one())
 
 print("initializing...")
 
-cups = Cups(list(map(int, "538914762")) + list(range(10, 1000001)))
+cups = Cups(list(map(int, "538914762")) + list(range(10, 1_000_001)))
 
-print("calculating, please wait about 70 sec...")
+print("calculating, please wait about 17 sec...")
 
-for _ in range(10000000):
+for _ in range(10_000_000):
 	cups.move()
 
 print(cups.by_value[1].next.value * cups.by_value[1].next.next.value)

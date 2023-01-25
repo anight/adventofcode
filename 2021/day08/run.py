@@ -38,8 +38,6 @@ def solve(zerotonine):
 		'abcdfg',   # 9
 	]
 
-	found = False
-
 	for p in permutations('abcdefg'):
 		encode_table = str.maketrans('abcdefg', ''.join(p))
 		test_digits = [ set(d.translate(encode_table)) for d in digits ]
@@ -48,10 +46,9 @@ def solve(zerotonine):
 				break
 			test_digits.remove(set(z))
 		if len(test_digits) == 0:
-			found = True
 			break
-
-	assert found
+	else:
+		raise Exception("not found")
 
 	encoded_digits = [ set(d.translate(encode_table)) for d in digits ]
 	def decoder(n):
