@@ -27,8 +27,8 @@ class Monkey:
 	test_false: int
 	inspected: int = 0
 
-	@staticmethod
-	def from_text(lines):
+	@classmethod
+	def from_text(cls, lines):
 		for line in lines:
 			if line.startswith('Monkey '):
 				num = int(line.split(' ')[1][:-1])
@@ -48,7 +48,7 @@ class Monkey:
 				test_true = int(line.split(' to monkey ')[1])
 			elif line.startswith('    If false: throw to monkey '):
 				test_false = int(line.split(' to monkey ')[1])
-		return Monkey(num, items, partial(new_value, op1, op, op2), test_div, test_true, test_false)
+		return cls(num, items, partial(new_value, op1, op, op2), test_div, test_true, test_false)
 
 	def turn(self, monkeys, divisor):
 		while self.items:
