@@ -68,7 +68,7 @@ print(w * h - len(elves))
 i += 1
 
 while True:
-	new_elves, _, _ = next_state(i, elves)
+	new_elves, *_ = next_state(i, elves)
 	i += 1
 	if new_elves == elves:
 		break

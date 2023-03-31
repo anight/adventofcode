@@ -42,7 +42,7 @@ class Walker(Graph):
 				return False
 			return True
 		for (nx, ny, nt) in possible_moves:
-			if nx >= 0 and nx < w and ny >= 0 and ny < h and nt < max_minutes:
+			if 0 <= nx < w and 0 <= ny < h and nt < max_minutes:
 				if can_walk(nx, ny, nt):
 					yield (nx, ny, nt), 1
 

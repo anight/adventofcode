@@ -23,7 +23,7 @@ for seat in load_data('input.txt'):
 print(highest_id)
 
 # Part Two
-all_seats = dict( (id, True) for id in range(highest_id+1) )
+all_seats = { id: True for id in range(highest_id+1) }
 for seat in load_data('input.txt'):
 	id = calc_id(seat)
 	del all_seats[id]

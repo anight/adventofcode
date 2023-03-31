@@ -9,9 +9,9 @@ def load_data(filename):
 # Part One
 
 def priority(char):
-	if char >= 'a' and char <= 'z':
+	if 'a' <= char <= 'z':
 		return ord(char) - ord('a') + 1
-	if char >= 'A' and char <= 'Z':
+	if 'A' <= char <= 'Z':
 		return ord(char) - ord('A') + 27
 
 total = 0

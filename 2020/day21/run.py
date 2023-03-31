@@ -8,7 +8,7 @@ def load_food():
 			allergens = set(tokens[1].strip(')\n').split(', '))
 			yield ingredients, allergens
 
-ingredients_with_allergens = set([])
+ingredients_with_allergens = set()
 all_ingredients = []
 known_allergens = {}
 allergens_candidates = {}

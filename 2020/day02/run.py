@@ -11,7 +11,7 @@ def all_passwords():
 valid = 0
 for n_from, n_to, char, passwd in all_passwords():
 	n = passwd.count(char)
-	if n >= n_from and n <= n_to:
+	if n_from <= n <= n_to:
 		valid += 1
 
 print(valid)

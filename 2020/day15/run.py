@@ -3,7 +3,7 @@
 input = "20,9,11,0,1,2"
 
 spoken = list(map(int, input.split(',')))
-last = dict((n, i) for i, n in enumerate(spoken[:-1]))
+last = { n: i for i, n in enumerate(spoken[:-1]) }
 
 def play(limit):
 	while len(spoken) < limit:

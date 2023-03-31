@@ -14,7 +14,7 @@ def load_data(filename):
 from itertools import pairwise, product
 
 the_row = 2_000_000
-beacons_in_the_row = set([])
+beacons_in_the_row = set()
 all_intervals = []
 for (sx, sy), (bx, by) in load_data('input.txt'):
 	if by == the_row:
@@ -43,7 +43,7 @@ total = 0
 for f, t in all_intervals:
 	r = t - f + 1
 	for bx in beacons_in_the_row:
-		if bx >= f and bx <= t:
+		if f <= bx <= t:
 			r -= 1
 	total += r
 

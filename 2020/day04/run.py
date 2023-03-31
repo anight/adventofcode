@@ -39,10 +39,10 @@ total_valid = 0
 for p in load_passports('input.txt'):
 	def valid(p):
 		constraints = {
-			'byr': (r'^(\d{4})$', lambda g: int(g[0]) >= 1920 and int(g[0]) <= 2002),
-			'iyr': (r'^(\d{4})$', lambda g: int(g[0]) >= 2010 and int(g[0]) <= 2020),
-			'eyr': (r'^(\d{4})$', lambda g: int(g[0]) >= 2020 and int(g[0]) <= 2030),
-			'hgt': (r'^(\d+)(in|cm)$', lambda g: int(g[0]) >= {'in': 59, 'cm': 150}[g[1]] and int(g[0]) <= {'in': 76, 'cm': 193}[g[1]]),
+			'byr': (r'^(\d{4})$', lambda g: 1920 <= int(g[0]) <= 2002),
+			'iyr': (r'^(\d{4})$', lambda g: 2010 <= int(g[0]) <= 2020),
+			'eyr': (r'^(\d{4})$', lambda g: 2020 <= int(g[0]) <= 2030),
+			'hgt': (r'^(\d+)(in|cm)$', lambda g: {'in': 59, 'cm': 150}[g[1]] <= int(g[0]) <= {'in': 76, 'cm': 193}[g[1]]),
 			'hcl': (r'^#[\da-f]{6}$', None),
 			'ecl': (r'^(amb|blu|brn|gry|grn|hzl|oth)$', None),
 			'pid': (r'^\d{9}$', None),

@@ -12,7 +12,7 @@ def launch(vx, vy):
 		y += vy
 		if highest_y < y:
 			highest_y = y
-		if x >= target['x_from'] and x <= target['x_to'] and y >= target['y_from'] and y <= target['y_to']:
+		if target['x_from'] <= x <= target['x_to'] and target['y_from'] <= y <= target['y_to']:
 			return True, highest_y
 		if y < target['y_from']:
 			return False, highest_y

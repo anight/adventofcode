@@ -42,9 +42,9 @@ class DiscreteVolumeStorage(object):
 				if stop <= new_start or new_stop <= start:
 					skip = True
 				elif stop > new_stop or start < new_start:
-					if start < new_start and stop > new_start:
+					if start < new_start < stop:
 						cuts.append(aabb[:j] + [ (start, new_start) ] + aabb[j+1:])
-					if stop > new_stop and start < new_stop:
+					if start < new_stop < stop:
 						cuts.append(aabb[:j] + [ (new_stop, stop) ] + aabb[j+1:])
 					aabb[j] = ( max(start, new_start), min(stop, new_stop) )
 			if skip:

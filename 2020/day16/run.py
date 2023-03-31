@@ -11,7 +11,7 @@ def load_data(filename):
 				break
 			name, ranges = line.split(': ')
 			ranges = ranges.split(' or ')
-			s = set([])
+			s = set()
 			for r in ranges:
 				numbers = r.split('-')
 				s |= set(range(int(numbers[0]), int(numbers[1])+1))
@@ -34,7 +34,7 @@ import numpy as np
 
 rules, my_ticket, nearby_tickets = load_data('input.txt')
 
-all_rules = set([])
+all_rules = set()
 for _, valid_numbers in rules:
 	all_rules |= valid_numbers
 
@@ -53,7 +53,7 @@ print(total_invalid)
 field_map = {}
 nearby_tickets = np.array(nearby_tickets)
 for rule_no, (name, s) in enumerate(rules):
-	possible_fields = set([])
+	possible_fields = set()
 	for field_no in range(nearby_tickets.shape[1]):
 		if all( x in s for x in nearby_tickets[:,field_no] ):
 			possible_fields |= set([field_no])

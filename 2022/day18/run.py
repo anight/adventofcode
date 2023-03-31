@@ -36,14 +36,14 @@ for x, y, z in cubes.keys():
 
 def isolated(x, y, z):
 	visited = { (x, y, z): None }
-	lookup = dict( (c, None) for c in neighbours(x, y, z) if c not in cubes )
+	lookup = { c: None for c in neighbours(x, y, z) if c not in cubes }
 	while len(lookup) > 0:
 		x, y, z = next(iter(lookup))
 		del lookup[ (x, y, z) ]
 		visited[ (x, y, z) ] = None
 		if x in (minx, maxx) or y in (miny, maxy) or z in (minz, maxz):
 			return False
-		lookup.update( (c, None) for c in neighbours(x, y, z) if c not in cubes and c not in visited and c not in lookup )
+		lookup |= { c: None for c in neighbours(x, y, z) if c not in cubes and c not in visited and c not in lookup }
 	return True
 
 cubes_isolated = []

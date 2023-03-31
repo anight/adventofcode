@@ -21,7 +21,7 @@ class ALU:
 		self.input = None
 
 	def reset(self):
-		self.values = dict(zip(self.regs, [0] * len(self.regs)))
+		self.values = { reg: 0 for reg in self.regs }
 
 	def load(self, code):
 		self.code = code
