@@ -4,7 +4,7 @@ def load_data(filename):
 	with open(filename, 'r') as f:
 		times = f.readline().rstrip('\n').split()[1:]
 		distances = f.readline().rstrip('\n').split()[1:]
-		return map(int, times), map(int, distances)
+		return list(map(int, times)), list(map(int, distances))
 
 # Part One
 
@@ -17,14 +17,12 @@ def distance(total_time, button_time):
 	return (total_time - button_time) * speed
 
 for t, record_distance in zip(times, distances):
-	variants = [ 1 for b in range(t+1) if distance(t, b) > record_distance ]
-	total *= len(variants)
+	variants = sum( 1 for b in range(t+1) if distance(t, b) > record_distance )
+	total *= variants
 
 print(total)
 
 # Part Two
-
-times, distances = load_data('input.txt')
 
 time = int(''.join(map(str, times)))
 record_distance = int(''.join(map(str, distances)))
@@ -37,7 +35,7 @@ def search(low, high, f):
 			low = mid
 		else:
 			high = mid
-	return mid
+	return high
 
 def lower_bound(x):
 	if distance(time, x) <= record_distance:

@@ -9,7 +9,7 @@ def load_data(filename):
 			if line.startswith('seeds:'):
 				seeds = list(map(int, line.split(': ')[1].split()))
 			elif line.endswith(':'):
-				map_from, _, map_to = line[:-len(" map:")].split('-')
+				map_from, map_to = line[:-len(" map:")].split('-to-')
 			elif line == '':
 				if len(current_map) > 0:
 					maps[ (map_from, map_to) ] = current_map
@@ -35,8 +35,6 @@ for value in seeds:
 			if src <= value < src + r:
 				value = dst + value - src
 				break
-		else:
-			pass
 		key = next_key
 	min_location = min(min_location, value)
 
@@ -50,7 +48,8 @@ import portion as P
 min_location = float('inf')
 
 for i in range(0, len(seeds), 2):
-	ranges_from = P.closed(seeds[i], seeds[i] + seeds[i+1] - 1)
+	src, r = seeds[i:i+2]
+	ranges_from = P.closed(src, src + r - 1)
 	key = 'seed'
 	while key != 'location':
 		translated = P.empty()
