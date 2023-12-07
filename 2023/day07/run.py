@@ -9,6 +9,9 @@ def load_data(filename):
 
 # Part One
 
+def total_winnings(hands):
+	return sum( n * h.bid for n, h in enumerate(sorted(hands, reverse=True), start=1))
+
 from dataclasses import dataclass
 from collections import Counter
 
@@ -40,21 +43,21 @@ class Hand:
 		return "AKQJT98765432".index(card)
 
 	def groups(self):
-		return sorted(dict(Counter(self.cards)).items(), key=lambda v: v[1], reverse=True)
+		return Counter(self.cards).most_common()
 
 	def type(self):
 		t = tuple( v for _, v in self.groups() if v > 1 )
 		return self.hand_type[t]
 
 	def strength(self):
-		return ( self.type(), *[ self.card_strength(c) for c in self.cards] )
+		return ( self.type(), *[ self.card_strength(c) for c in self.cards ] )
 
 	def __lt__(self, other):
 		return self.strength() < other.strength()
 
 hands = [ Hand(cards, bid) for cards, bid in load_data('input.txt') ]
 
-print(sum( n * h.bid for n, h in enumerate(sorted(hands, reverse=True), start=1)))
+print(total_winnings(hands))
 
 # Part Two
 
@@ -80,4 +83,4 @@ class HandWithJforJoker(Hand):
 
 hands = [ HandWithJforJoker(cards, bid) for cards, bid in load_data('input.txt') ]
 
-print(sum( n * h.bid for n, h in enumerate(sorted(hands, reverse=True), start=1)))
+print(total_winnings(hands))
