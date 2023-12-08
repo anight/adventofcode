@@ -17,7 +17,7 @@ instructions, maps = load_data('input.txt')
 
 def walk(node, end):
 	def next_node(node, instruction):
-		return maps[node][{"L": 0, "R": 1}[instruction]]
+		return maps[node][instruction == 'R']
 	steps = 0
 	while not end(node):
 		for i in instructions:
