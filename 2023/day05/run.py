@@ -60,9 +60,8 @@ for i in range(0, len(seeds), 2):
 			for interval in intersection:
 				translated |= P.closed(dst + interval.lower - src, dst + interval.upper - src)
 				ranges_from -= interval
-		translated |= ranges_from
+		ranges_from |= translated
 		key = next_key
-		ranges_from = translated
 	min_location = min(min_location, ranges_from.lower)
 
 print(min_location)
