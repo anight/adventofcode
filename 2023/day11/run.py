@@ -21,9 +21,9 @@ for y in range(a.shape[0]-1, -1, -1):
 	if np.all(a[y,:] == '.'):
 		a = np.vstack((a[:y,:], a[y:y+1,:], a[y:y+1,:], a[y+1:,:]))
 
-stars = list(zip(*np.where(a == '#')))
+stars = zip(*np.where(a == '#'))
 
-distances1 = [ abs(y0-y1) + abs(x0 - x1) for (y0, x0), (y1, x1) in combinations(stars, 2) ]
+distances1 = [ abs(y0-y1) + abs(x0-x1) for (y0, x0), (y1, x1) in combinations(stars, 2) ]
 
 print(sum(distances1))
 
@@ -31,9 +31,9 @@ print(sum(distances1))
 
 a = np.array(list(load_data('input.txt')))
 
-stars = list(zip(*np.where(a == '#')))
+stars = zip(*np.where(a == '#'))
 
 distances = [ abs(y0-y1) + abs(x0-x1) for (y0, x0), (y1, x1) in combinations(stars, 2) ]
 
-print(sum([ d + (d1 - d) * 999999 for d, d1 in zip(distances, distances1) ]))
+print(sum([ d + (d1-d) * 999999 for d, d1 in zip(distances, distances1) ]))
 

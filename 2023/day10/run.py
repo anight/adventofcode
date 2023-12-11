@@ -57,13 +57,7 @@ def path(x, y, dx, dy):
 
 def trace(x, y, pd, color_left, color_right):
 	dx, dy = pd
-	p = iter(path(x+dx, y+dy, dx, dy))
-
-	while True:
-		try:
-			x, y, dx, dy = next(p)
-		except StopIteration:
-			break
+	for x, y, dx, dy in path(x+dx, y+dy, dx, dy):
 		paintboard[y, x] = '@'
 		def paint(color, x, y):
 			if paintboard[y,x] == ' ':
