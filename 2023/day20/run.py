@@ -103,14 +103,14 @@ final_conjunction = c.inputs['rx'][0]
 conjunctions_of_interest = c.inputs[final_conjunction]
 
 presses = 0
-found = 0
-total = 1
+periods = []
 
-while found < 4:
+while len(periods) < 4:
 	presses += 1
 	module = c.run(conjunctions_of_interest)
 	if module is not None:
-		total *= presses
-		found += 1
+		periods.append(presses)
 
-print(total)
+import math
+
+print(math.lcm(*periods))
