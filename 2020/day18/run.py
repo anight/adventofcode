@@ -5,181 +5,111 @@ def all_samples(filename):
 		for line in f:
 			yield line.rstrip()
 
-import re
-from collections import namedtuple
-from functools import cached_property
-from operator import add, mul
+from ply import lex, yacc
 
 class Lexer:
-	whitespace_matcher = re.compile(r'\s*')
-	number_matcher = re.compile(r'[0-9]+')
+	tokens = (
+		'NUMBER',
+		'PLUS',
+		'TIMES',
+		'LPAREN',
+		'RPAREN',
+	)
 
-	class Token(namedtuple('Token', [])):
-		pass
-	class Value(namedtuple('Value', 'value')):
-		pass
-	class Number(Value):
-		pass
-	class ParenthesisOpen(Token):
-		pass
-	class ParenthesisClose(Token):
-		pass
-	class Asterisk(Token):
-		pass
-	class PlusSign(Token):
-		pass
-	class SyntaxError(Exception):
-		pass
+	t_PLUS    = r'\+'
+	t_TIMES   = r'\*'
+	t_LPAREN  = r'\('
+	t_RPAREN  = r'\)'
 
-	def skip_leading_whitespace(self, s, pos) -> int:
-		return self.whitespace_matcher.match(s, pos).end()
+	t_ignore  = ' '
 
-	def parse_number(self, s, pos):
-		end = self.number_matcher.match(s, pos).end()
-		assert end > pos
-		return int(s[pos:end]), end
+	def t_NUMBER(self, t):
+		r'\d+'
+		t.value = int(t.value)
+		return t
 
-	def scan(self, s):
-		pos = 0
-		while True:
-			pos = self.skip_leading_whitespace(s, pos)
-			if pos == len(s):
-				return
-			char = s[pos]
-			match char:
-				case '(':
-					yield Lexer.ParenthesisOpen()
-					pos += 1
-				case ')':
-					yield Lexer.ParenthesisClose()
-					pos += 1
-				case char if char in '0123456789':
-					num, pos = self.parse_number(s, pos)
-					yield Lexer.Number(num)
-				case '*':
-					yield Lexer.Asterisk()
-					pos += 1
-				case '+':
-					yield Lexer.PlusSign()
-					pos += 1
-				case _:
-					raise Lexer.SyntaxError(f"Syntax error at position {pos}")
+	def t_error(self, t):
+		print("Unexpected character '%s'" % t.value[0])
+		t.lexer.skip(1)
 
-class Parser:
+	def __init__(self, **kwargs):
+		self.lexer = lex.lex(module=self, **kwargs)
 
-	class UnexpectedClosingParenthesis(Exception):
-		pass
+class Parser(Lexer):
 
-	class MissingClosingParenthesis(Exception):
-		pass
+	def p_error(self, p):
+		print("Syntax error in input!")
 
-	class UnexpectedOperator(Exception):
-		pass
+	def __init__(self, **kwargs):
+		super(Parser, self).__init__(**kwargs)
+		self.parser = yacc.yacc(module=self, debug=0, write_tables=0, **kwargs)
 
-	class UnexpectedValue(Exception):
-		pass
-
-	def __init__(self, lexer):
-		self.lexems = list(lexer)
-		self.items = []
-		self.parse()
-
-	def closing_parenthesis(self, pos):
-		nested = 0
-		while pos < len(self.lexems):
-			l = self.lexems[pos]
-			match l:
-				case Lexer.ParenthesisOpen():
-					nested += 1
-				case Lexer.ParenthesisClose():
-					if nested == 0:
-						return pos
-					nested -= 1
-			pos += 1
-		raise Parser.MissingClosingParenthesis()
-
-	def parse(self):
-		pos = 0
-		expect = 'value'
-		while pos < len(self.lexems):
-			l = self.lexems[pos]
-			match l:
-				case Lexer.ParenthesisOpen():
-					if expect != 'value':
-						raise Parser.UnexpectedValue()
-					end = self.closing_parenthesis(pos+1)
-					subexpression = self.__class__(self.lexems[pos+1:end])
-					self.items.append(subexpression)
-					pos = end + 1
-					expect = 'op'
-				case Lexer.ParenthesisClose():
-					raise Parser.UnexpectedClosingParenthesis()
-				case Lexer.Number() as num:
-					if expect != 'value':
-						raise Parser.UnexpectedValue()
-					self.items.append(num)
-					pos += 1
-					expect = 'op'
-				case Lexer.Asterisk():
-					if expect != 'op':
-						raise Parser.UnexpectedOperator()
-					self.items.append(mul)
-					pos += 1
-					expect = 'value'
-				case Lexer.PlusSign():
-					if expect != 'op':
-						raise Parser.UnexpectedOperator()
-					self.items.append(add)
-					pos += 1
-					expect = 'value'
-
-	def __repr__(self):
-		return str(self.items)
+	def parse(self, text):
+		return self.parser.parse(text, lexer=self.lexer)
 
 # Part One
 
 class ParserPartOne(Parser):
 
-	@cached_property
-	def value(self):
-		acc = self.items[0].value
-		for i in range(1, len(self.items), 2):
-			op = self.items[i]
-			arg = self.items[i+1]
-			acc = op(acc, arg.value)
-		return acc
+	def p_expression(self, p):
+		'''expression : term'''
+		p[0] = p[1]
 
-result = 0
+	def p_term_num(self, p):
+		'''term : NUMBER'''
+		p[0] = p[1]
+
+	def p_expression_binop(self, p):
+		'''expression : expression PLUS term
+		 | expression TIMES term'''
+		if p[2] == '+':
+			p[0] = p[1] + p[3]
+		elif p[2] == '*':
+			p[0] = p[1] * p[3]
+
+	def p_term_expr(self, p):
+		'''term : LPAREN expression RPAREN'''
+		p[0] = p[2]
+
+total = 0
+
 for line in all_samples('input.txt'):
-	result += ParserPartOne(Lexer().scan(line)).value
+	total += ParserPartOne().parse(line)
 
-print(result)
+print(total)
 
 # Part Two
 
 class ParserPartTwo(Parser):
 
-	@cached_property
-	def value(self):
-		# first do all additions
-		items = list(self.items)
-		while add in items:
-			i = items.index(add)
-			result = add(items[i-1].value, items[i+1].value)
-			items[i-1] = Lexer.Number(result)
-			items.pop(i)
-			items.pop(i)
+	def p_expression2(self, p):
+		'''expression : term'''
+		p[0] = p[1]
 
-		# do the rest
-		acc = items[0].value
-		for i in range(1, len(items), 2):
-			op = items[i]
-			arg = items[i+1]
-			acc = op(acc, arg.value)
-		return acc
+	def p_expression_times(self, p):
+		'''expression : expression TIMES term'''
+		p[0] = p[1] * p[3]
 
-result = 0
+	def p_term_plus(self, p):
+		'''term : term PLUS factor'''
+		p[0] = p[1] + p[3]
+
+	def p_term_factor(self, p):
+		'''term : factor'''
+		p[0] = p[1]
+
+	def p_factor_num(self, p):
+		'''factor : NUMBER'''
+		p[0] = p[1]
+
+	def p_factor_exp(self, p):
+		'''factor : LPAREN expression RPAREN'''
+		p[0] = p[2]
+
+total = 0
+
 for line in all_samples('input.txt'):
-	result += ParserPartTwo(Lexer().scan(line)).value
+	total += ParserPartTwo().parse(line)
 
-print(result)
+print(total)
+
