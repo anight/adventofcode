@@ -27,8 +27,6 @@ from itertools import combinations
 for box_id1, box_id2 in combinations(load_data('input.txt'), 2):
 	if sum(box_id1[i] != box_id2[i] for i in range(len(box_id1))) == 1:
 		break
-else:
-	raise("oops")
 
 common_letters = [ box_id1[i] for i in range(len(box_id1)) if box_id1[i] == box_id2[i] ]
 
