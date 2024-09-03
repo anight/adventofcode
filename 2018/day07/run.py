@@ -19,12 +19,12 @@ for must_be_finished_before, step in reqs:
 		deps[step] |= set([ must_be_finished_before ])
 
 	if must_be_finished_before not in deps:
-		deps[must_be_finished_before] = set([])
+		deps[must_be_finished_before] = set()
 
 steps = ''
 
 while set(deps.keys()) - set(steps):
-	found = set([])
+	found = set()
 	for k, v in deps.items():
 		if k in steps:
 			continue
@@ -54,7 +54,7 @@ while True:
 	if not set(deps.keys()) - set(steps):
 		break
 	# Find steps we can take
-	found = set([])
+	found = set()
 	for k, v in deps.items():
 		if k in steps:
 			continue

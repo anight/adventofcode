@@ -14,10 +14,10 @@ coords = np.array(list(load_data('input.txt')))
 # Part One
 
 def distances(coords, pad):
-	coords = np.transpose(coords)[:, :, np.newaxis, np.newaxis]
+	coords = np.transpose(coords)[..., np.newaxis, np.newaxis]
 	min_x, max_x = np.min(coords[0]) - pad, np.max(coords[0]) + pad
 	min_y, max_y = np.min(coords[1]) - pad, np.max(coords[1]) + pad
-	grid = np.mgrid[min_y:max_y+1, min_x:max_x+1][:, np.newaxis, :, :]
+	grid = np.mgrid[min_y:max_y+1, min_x:max_x+1][:, np.newaxis, ...]
 	return np.abs(grid[0] - coords[1]) + np.abs(grid[1] - coords[0])
 
 def area(coords, pad):

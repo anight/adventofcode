@@ -13,7 +13,7 @@ print(result)
 
 # Part Two
 
-history = set([])
+history = set()
 
 freq = 0
 
