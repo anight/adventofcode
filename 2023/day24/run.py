@@ -106,7 +106,7 @@ lines_e_minus_12 = lines.copy().astype(np.float64)
 lines_e_minus_12[:,0,:] *= 1e-12
 
 p, d = find_best_intersecting_line(lines_e_minus_12)
-print(f"The best fitting line has point: {p} and direction: {d}")
+#print(f"The best fitting line has point: {p} and direction: {d}")
 
 def find_integer_d(d):
 
@@ -122,7 +122,7 @@ def find_integer_d(d):
 
 d = find_integer_d(d).astype(int)
 
-print(f"integer d={d}")
+#print(f"integer d={d}")
 
 p0 = np.array(list(map(Rational, lines[0][0])), dtype='object')
 d0 = np.array(list(map(Rational, lines[0][1])), dtype='object')

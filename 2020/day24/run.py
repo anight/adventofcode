@@ -65,16 +65,6 @@ def next_state(black_tiles):
 			next_black_tiles[coord] = True
 	return next_black_tiles
 
-# A test
-black_tiles = {}
-for coords in load_all_tiles('test.txt'):
-	if coords in black_tiles:
-		del black_tiles[coords]
-	else:
-		black_tiles[coords] = True
-
-assert 10 == len(black_tiles)
-
 # Part One
 black_tiles = {}
 for coords in load_all_tiles('input.txt'):

@@ -96,11 +96,7 @@ print(cups.ordered_from_one())
 
 # Part Two
 
-print("initializing...")
-
 cups = Cups(list(map(int, "538914762")) + list(range(10, 1_000_001)))
-
-print("calculating, please wait about 17 sec...")
 
 for _ in range(10_000_000):
 	cups.move()
