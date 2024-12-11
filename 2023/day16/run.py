@@ -28,11 +28,13 @@ def trace_light(tracing):
 				dx, dy = -dy, -dx
 			elif a[y, x] == '|' and dx != 0:
 				dx, dy = dy, dx
-				new_tracing |= set([ (x, y, 0, -1), (x, y, 0, 1) ])
+				new_tracing.add( (x, y, 0, -1) )
+				new_tracing.add( (x, y, 0, 1) )
 			elif a[y, x] == '-' and dy != 0:
 				dx, dy = dy, dx
-				new_tracing |= set([ (x, y, -1, 0), (x, y, 1, 0) ])
-			new_tracing |= set([ (x, y, dx, dy) ])
+				new_tracing.add( (x, y, -1, 0) )
+				new_tracing.add( (x, y, 1, 0) )
+			new_tracing.add( (x, y, dx, dy) )
 		new_tracing -= light
 		light |= new_tracing
 		tracing = new_tracing

@@ -89,14 +89,14 @@ for brick in bricks:
 				break
 		else:
 			continue
-		brick.under |= set([stack[(cx, cy, z)]])
+		brick.under.add(stack[(cx, cy, z)])
 	for cx, cy, cz in brick.top_cubes():
 		for z in range(cz+1, TOP+1):
 			if (cx, cy, z) in stack:
 				break
 		else:
 			continue
-		brick.over |= set([stack[(cx, cy, z)]])
+		brick.over.add(stack[(cx, cy, z)])
 
 def all_fall():
 	moved = 0
@@ -137,7 +137,7 @@ for brick in bricks:
 			add = set()
 			for b in to_test:
 				if b.would_fall_without(fallen):
-					add |= set([b])
+					add.add(b)
 			return add
 
 		add = test(fallen)

@@ -56,7 +56,7 @@ for rule_no, (name, s) in enumerate(rules):
 	possible_fields = set()
 	for field_no in range(nearby_tickets.shape[1]):
 		if all( x in s for x in nearby_tickets[:,field_no] ):
-			possible_fields |= set([field_no])
+			possible_fields.add(field_no)
 	field_map[rule_no] = possible_fields
 
 found = []

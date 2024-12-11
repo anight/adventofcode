@@ -16,7 +16,7 @@ for must_be_finished_before, step in reqs:
 	if step not in deps:
 		deps[step] = set([ must_be_finished_before ])
 	else:
-		deps[step] |= set([ must_be_finished_before ])
+		deps[step].add(must_be_finished_before)
 
 	if must_be_finished_before not in deps:
 		deps[must_be_finished_before] = set()

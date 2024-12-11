@@ -54,7 +54,7 @@ while len(to_paint) > 0:
 	to_paint -= set([cell])
 	for n_cell in neighbours(*cell):
 		if f.get(n_cell, None) is None:
-			to_paint |= set([n_cell])
+			to_paint.add(n_cell)
 
 print(len(f))
 

@@ -15,13 +15,13 @@ a = np.pad(a, 1, constant_values=('%',))
 
 # Part One
 
-y, x = next(iter(zip(*np.where(a == '^'))))
+y, x = next(zip(*np.where(a == '^')))
 dx, dy = 0, -1
 
 visited = set()
 
 while True:
-	visited |= set([(x, y)])
+	visited.add( (x, y) )
 	fx, fy = x + dx, y + dy
 	if a[fy, fx] == '%':
 		break
@@ -38,7 +38,7 @@ def walk_is_cycled(x, y, dx, dy, trail, obstacles, try_obstacle=None):
 	while True:
 		if (x, y, dx, dy) in trail:
 			return True
-		trail |= set([(x, y, dx, dy)])
+		trail.add( (x, y, dx, dy) )
 		fx, fy = x + dx, y + dy
 		if a[fy, fx] == '%':
 			return False
@@ -50,7 +50,7 @@ def walk_is_cycled(x, y, dx, dy, trail, obstacles, try_obstacle=None):
 				obstacles[ (fx, fy) ] = walk_is_cycled(x, y, -dy, dx, trail.copy(), obstacles, try_obstacle=(fx, fy))
 			x, y = fx, fy
 
-y, x = next(iter(zip(*np.where(a == '^'))))
+y, x = next(zip(*np.where(a == '^')))
 dx, dy = 0, -1
 
 # The new obstruction can't be placed at the guard's starting position

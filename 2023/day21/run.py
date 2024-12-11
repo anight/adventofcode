@@ -17,7 +17,7 @@ def neighbours(x, y):
 	yield x, y+1
 	yield x, y-1
 
-y, x = next(iter(zip(*np.where(a == 'S'))))
+y, x = next(zip(*np.where(a == 'S')))
 
 def plots(x, y, steps):
 	visited = [ set(), { (x, y) } ]

@@ -148,7 +148,7 @@ class Walker3DFold(Walker):
 					for e in c2e[p]:
 						key = tuple(sorted(e))
 						for f in e2f[key]:
-							faces |= set([f[1]])
+							faces.add(f[1])
 						n_faces = len(e2f[key])
 						if n_faces == 1:
 							g.append(e)

@@ -18,7 +18,7 @@ beacons_in_the_row = set()
 all_intervals = []
 for (sx, sy), (bx, by) in load_data('input.txt'):
 	if by == the_row:
-		beacons_in_the_row |= set([bx])
+		beacons_in_the_row.add(bx)
 	distance = abs(sx - bx) + abs(sy - by)
 	interval = (sx - distance + abs(sy - the_row), sx + distance - abs(sy - the_row))
 	if interval[0] <= interval[1]:
