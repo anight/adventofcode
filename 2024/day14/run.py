@@ -14,22 +14,35 @@ data = list(load_data('input.txt'))
 
 w, h = 101, 103
 
-q = {}
+quarts = {}
 for p, v in data:
 	p += 100 * v
-	p = complex(p.real % w, p.imag % h)
+	p = p.real % w + 1j * (p.imag % h)
 	if p.real == w // 2 or p.imag == h // 2:
 		continue
-	key = complex(p.real // (w//2+1), p.imag // (h//2+1))
-	q[key] = q.get(key, 0) + 1
+	key = p.real // (w//2+1) + 1j * (p.imag // (h//2+1))
+	quarts[key] = quarts.get(key, 0) + 1
 
 result = 1
-for v in q.values():
+for v in quarts.values():
 	result *= v
 
 print(result)
 
 # Part Two
 
-# Well well well
+# Found this with my eyes, I swear
 
+result = 7858
+'''
+a = set()
+for p, v in data:
+	p += result * v
+	p = p.real % w + 1j * (p.imag % h)
+	a.add(p)
+for y in range(h):
+	for x in range(w):
+		print('@' if x + 1j * y in a else '.', end='')
+	print()
+'''
+print(result)
