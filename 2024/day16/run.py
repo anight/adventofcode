@@ -10,8 +10,10 @@ from dataclasses import dataclass, field
 from typing import Any
 from functools import reduce
 
-def neighbours(c):
+def neighbours(c, direction):
 	for d in range(4):
+		if 1j ** d == -direction:
+			continue
 		n = c + 1j ** d
 		if a.get(n, '*') in '.SE':
 			yield n
@@ -46,7 +48,7 @@ def dijkstra_best_score(source, target, direction):
 		
 		visited[current] = cost
 		
-		for neighbour in neighbours(current):
+		for neighbour in neighbours(current, direction):
 			move_cost, new_direction = edge_weight(current, neighbour, direction)
 			new_cost = cost + move_cost
 			heappush(queue, PrioritizedItem(new_cost, (neighbour, new_direction)))
@@ -101,7 +103,7 @@ def dijkstra_all_best_paths(source, target, direction):
 				best.update(cost, current)
 			continue
 
-		for neighbour in neighbours(current.coord):
+		for neighbour in neighbours(current.coord, current.direction):
 			move_cost, new_direction = edge_weight(current.coord, neighbour, current.direction)
 			new_cost = cost + move_cost
 			if new_cost <= best.cost:
